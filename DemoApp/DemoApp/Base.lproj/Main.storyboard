@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="DemoApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pf8-Go-3v4">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="450"/>
+                                <color key="backgroundColor" red="0.58252446338383845" green="0.58252446338383845" blue="0.58252446338383845" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="pf8-Go-3v4" secondAttribute="height" multiplier="4:3" id="fRI-mh-FXm"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DF9-fe-B5r">
+                                <rect key="frame" x="285" y="465" width="30" height="30"/>
+                                <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="playAndStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="NGg-YQ-xcu"/>
+                                </connections>
+                            </button>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="NrU-X4-gff">
+                                <rect key="frame" x="282" y="206" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="pf8-Go-3v4" secondAttribute="trailing" constant="-20" id="5sO-fV-9Mr"/>
+                            <constraint firstItem="pf8-Go-3v4" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="-20" id="7sr-Ro-0Zk"/>
+                            <constraint firstItem="NrU-X4-gff" firstAttribute="centerY" secondItem="pf8-Go-3v4" secondAttribute="centerY" id="Lhc-EM-N3D"/>
+                            <constraint firstItem="DF9-fe-B5r" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SGA-Ki-kLt"/>
+                            <constraint firstItem="DF9-fe-B5r" firstAttribute="top" secondItem="pf8-Go-3v4" secondAttribute="bottom" constant="15" id="h1s-zg-2Rj"/>
+                            <constraint firstItem="NrU-X4-gff" firstAttribute="centerX" secondItem="pf8-Go-3v4" secondAttribute="centerX" id="kZO-eG-0Sc"/>
+                            <constraint firstItem="pf8-Go-3v4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="oX5-2I-aGY"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="pf8-Go-3v4" id="81R-k5-DKj"/>
+                        <outlet property="loadingIndicator" destination="NrU-X4-gff" id="8kp-Kz-3xN"/>
+                        <outlet property="playButton" destination="DF9-fe-B5r" id="wAC-Vs-nQK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="245" y="337"/>
+        </scene>
+    </scenes>
+</document>
