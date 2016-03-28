@@ -1,0 +1,10 @@
+*.xccheckout
+*.xcsettings
+*.xcbkptlisti
+xcuserdata/
+build/
+DerivedData/
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
+
