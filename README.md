@@ -38,7 +38,7 @@ streamingController.stop() // this will stop the video and the data transfer
 You can of course create the __UIImageView__ with interface builder (an __IBOutlet__) and initialize the __MjpegStreamingController__ with it.
 
 ## Performing actions during the *loading* time
-__MjpegStreamingController__ has two properties that can be set to perform actions ad the beginning and at the end of the loading time:
+__MjpegStreamingController__ has two properties that can be set to perform actions at the beginning and at the end of the loading time:
   * __var didStartLoading: (()->Void)?:__ this closure is called right after the __*play()*__ method has been invoked and should be used to set-up whatever should happen while the stream is loading (like displaying an activity indicator and start its animation)
   * __var didFinishLoading: (()->Void)?:__ this closure is called right before displaying the first frame of the video stream and should be use to undo what was done by __*didStartLoading*__ (like stopping the anipation of the activity indicator and hide it)
 ```swift
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
 }
 ```
 
-These two methods are completely optionals hence you are free to ignore them
+These two properties are completely optionals hence you are free to ignore them
 
 ## Authentication
 If when attempting to connect MjpegStreamingController receive an authentication challenge it will try to handle it in different ways depending on the authentication type and if the authenticationHandler is set:
