@@ -17,7 +17,7 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
     
-    var url: NSURL?
+    var url: URL?
     
     var playing = false
     
@@ -33,7 +33,7 @@ class ViewController: UIViewController {
             self.loadingIndicator.stopAnimating()
         }
         
-        url = NSURL(string: "http://webcams.hotelcozumel.com.mx:6003/axis-cgi/mjpg/video.cgi?resolution=320x240&dummy=1458771208837")
+        url = URL(string: "http://webcams.hotelcozumel.com.mx:6003/axis-cgi/mjpg/video.cgi?resolution=320x240&dummy=1458771208837")
         streamingController.contentURL = url
     }
     
@@ -43,14 +43,14 @@ class ViewController: UIViewController {
     
     @IBAction func playAndStop(sender: AnyObject) {
         if playing {
-            playButton.setTitle("Play", forState: .Normal)
+            playButton.setTitle("Play", for: .normal)
             streamingController.stop()
             playing = false
         } else {
             
             streamingController.play()
             playing = true
-            playButton.setTitle("Stop", forState: .Normal)
+            playButton.setTitle("Stop", for: .normal)
         }
     }
     
