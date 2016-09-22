@@ -8,32 +8,32 @@
 
 import UIKit
 
-public class MjpegStreamingController: NSObject, NSURLSessionDataDelegate {
+open class MjpegStreamingController: NSObject, URLSessionDataDelegate {
     
-    private enum Status {
-        case Stopped
-        case Loading
-        case Playing
+    fileprivate enum Status {
+        case stopped
+        case loading
+        case playing
     }
     
-    private var receivedData: NSMutableData?
-    private var dataTask: NSURLSessionDataTask?
-    private var session: NSURLSession!
-    private var status: Status = .Stopped
+    fileprivate var receivedData: NSMutableData?
+    fileprivate var dataTask: URLSessionDataTask?
+    fileprivate var session: Foundation.URLSession!
+    fileprivate var status: Status = .stopped
     
-    public var authenticationHandler: ((NSURLAuthenticationChallenge) -> (NSURLSessionAuthChallengeDisposition, NSURLCredential?))?
-    public var didStartLoading: (()->Void)?
-    public var didFinishLoading: (()->Void)?
-    public var contentURL: NSURL?
-    public var imageView: UIImageView
+    open var authenticationHandler: ((URLAuthenticationChallenge) -> (Foundation.URLSession.AuthChallengeDisposition, URLCredential?))?
+    open var didStartLoading: (()->Void)?
+    open var didFinishLoading: (()->Void)?
+    open var contentURL: URL?
+    open var imageView: UIImageView
     
     public init(imageView: UIImageView) {
         self.imageView = imageView
         super.init()
-        self.session = NSURLSession(configuration: NSURLSessionConfiguration.defaultSessionConfiguration(), delegate: self, delegateQueue: nil)
+        self.session = Foundation.URLSession(configuration: URLSessionConfiguration.default, delegate: self, delegateQueue: nil)
     }
     
-    public convenience init(imageView: UIImageView, contentURL: NSURL) {
+    public convenience init(imageView: UIImageView, contentURL: URL) {
         self.init(imageView: imageView)
         self.contentURL = contentURL
     }
@@ -42,67 +42,67 @@ public class MjpegStreamingController: NSObject, NSURLSessionDataDelegate {
         dataTask?.cancel()
     }
     
-    public func play(url url: NSURL){
-        if status == .Playing || status == .Loading {
+    open func play(url: URL){
+        if status == .playing || status == .loading {
             stop()
         }
         contentURL = url
         play()
     }
     
-    public func play() {
-        guard let url = contentURL where status == .Stopped else {
+    open func play() {
+        guard let url = contentURL , status == .stopped else {
             return
         }
         
-        status = .Loading
-        dispatch_async(dispatch_get_main_queue()) { self.didStartLoading?() }
+        status = .loading
+        DispatchQueue.main.async { self.didStartLoading?() }
         
         receivedData = NSMutableData()
-        let request = NSURLRequest(URL: url)
-        dataTask = session.dataTaskWithRequest(request)
+        let request = URLRequest(url: url)
+        dataTask = session.dataTask(with: request)
         dataTask?.resume()
     }
     
-    public func stop(){
-        status = .Stopped
+    open func stop(){
+        status = .stopped
         dataTask?.cancel()
     }
     
     // MARK: - NSURLSessionDataDelegate
     
-    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveResponse response: NSURLResponse, completionHandler: (NSURLSessionResponseDisposition) -> Void) {
-        if let imageData = receivedData where imageData.length > 0,
-            let receivedImage = UIImage(data: imageData) {
+    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
+        if let imageData = receivedData , imageData.length > 0,
+            let receivedImage = UIImage(data: imageData as Data) {
             // I'm creating the UIImage before performing didFinishLoading to minimize the interval
             // between the actions done by didFinishLoading and the appearance of the first image
-            if status == .Loading {
-                status = .Playing
-                dispatch_async(dispatch_get_main_queue()) { self.didFinishLoading?() }
+            if status == .loading {
+                status = .playing
+                DispatchQueue.main.async { self.didFinishLoading?() }
             }
             
-            dispatch_async(dispatch_get_main_queue()) { self.imageView.image = receivedImage }
+            DispatchQueue.main.async { self.imageView.image = receivedImage }
         }
         
         receivedData = NSMutableData()
-        completionHandler(.Allow)
+        completionHandler(.allow)
     }
     
-    public func URLSession(session: NSURLSession, dataTask: NSURLSessionDataTask, didReceiveData data: NSData) {
-        receivedData?.appendData(data)
+    open func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+        receivedData?.append(data)
     }
     
     // MARK: - NSURLSessionTaskDelegate
     
-    public func URLSession(session: NSURLSession, task: NSURLSessionTask, didReceiveChallenge challenge: NSURLAuthenticationChallenge, completionHandler: (NSURLSessionAuthChallengeDisposition, NSURLCredential?) -> Void) {
+    open func urlSession(_ session: URLSession, task: URLSessionTask, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
         
-        var credential: NSURLCredential?
-        var disposition: NSURLSessionAuthChallengeDisposition = .PerformDefaultHandling
+        var credential: URLCredential?
+        var disposition: Foundation.URLSession.AuthChallengeDisposition = .performDefaultHandling
         
         if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust {
             if let trust = challenge.protectionSpace.serverTrust {
-                credential = NSURLCredential(trust: trust)
-                disposition = .UseCredential
+                credential = URLCredential(trust: trust)
+                disposition = .useCredential
             }
         } else if let onAuthentication = authenticationHandler {
             (disposition, credential) = onAuthentication(challenge)
